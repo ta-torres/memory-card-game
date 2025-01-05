@@ -1,8 +1,14 @@
+// @ts-nocheck
 import { useState } from "react";
 import "./App.css";
+import PokemonCard from "./components/PokemonCard";
 
 function App() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+  return (
+    <div className="App">
+      <PokemonCard />
+    </div>
+  );
 }
 
 export default App;
