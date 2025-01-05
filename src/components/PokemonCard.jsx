@@ -4,6 +4,7 @@ const PokemonCard = () => {
   const [cards, setCards] = useState([]);
   const [currentScore, setCurrentScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchPokemon = async (id) => {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -24,6 +25,7 @@ const PokemonCard = () => {
   };
 
   const loadNewCards = async () => {
+    setIsLoading(true);
     try {
       const pokemonIds = getRandomPokemonIds(8);
       const pokemonData = await Promise.all(pokemonIds.map(fetchPokemon));
@@ -31,6 +33,7 @@ const PokemonCard = () => {
     } catch (error) {
       console.error("Error fetching Pokemon:", error);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -45,19 +48,23 @@ const PokemonCard = () => {
           <div className="text-lg">Best Score: {bestScore}</div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {cards.map((card) => (
-            <div
-              key={card.id}
-              className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center"
-            >
-              <img
-                src={card.image}
-                alt={card.name}
-                className="w-32 h-32 object-contain"
-              />
-              <p className="mt-2 capitalize">{card.name}</p>
-            </div>
-          ))}
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            cards.map((card) => (
+              <div
+                key={card.id}
+                className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center"
+              >
+                <img
+                  src={card.image}
+                  alt={card.name}
+                  className="w-32 h-32 object-contain"
+                />
+                <p className="mt-2 capitalize">{card.name}</p>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
