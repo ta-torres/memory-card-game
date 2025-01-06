@@ -6,6 +6,7 @@ const PokemonCard = () => {
   const [currentScore, setCurrentScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   const fetchPokemon = async (id) => {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -43,10 +44,8 @@ const PokemonCard = () => {
 
   const handleCardClick = (id) => {
     if (selectedCards.has(id)) {
+      setIsGameOver(true);
       if (currentScore > bestScore) setBestScore(currentScore);
-
-      setSelectedCards(new Set());
-      setCurrentScore(0);
     } else {
       setSelectedCards(new Set([...selectedCards, id]));
       setCurrentScore(currentScore + 1);
@@ -55,6 +54,31 @@ const PokemonCard = () => {
       loadNewCards();
     }
   };
+
+  const resetGame = () => {
+    setSelectedCards(new Set());
+    setCurrentScore(0);
+    setIsGameOver(false);
+    loadNewCards();
+  };
+
+  if (isGameOver) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4">
+        <div className="w-full max-w-md p-6">
+          <h2 className="text-2xl font-semibold text-center">Game Over!</h2>
+          <p className="text-xl">Final Score: {currentScore}</p>
+          <p className="text-lg">Best Score: {bestScore}</p>
+          <button
+            onClick={resetGame}
+            className="mt-4 w-full bg-blue-500 text-white p-2 rounded"
+          >
+            Play Again
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
