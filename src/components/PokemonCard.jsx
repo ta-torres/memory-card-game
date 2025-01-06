@@ -18,6 +18,9 @@ const PokemonCard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isGameOver, setIsGameOver] = useState(false);
 
+  const NUM_CARDS_SHOWN = 4;
+  const NUM_POKEMON = 151;
+
   const fetchPokemon = async (id) => {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
     const data = await response.json();
@@ -31,7 +34,7 @@ const PokemonCard = () => {
   const getRandomPokemonIds = (count) => {
     const ids = new Set();
     while (ids.size < count) {
-      ids.add(Math.floor(Math.random() * 100) + 1);
+      ids.add(Math.floor(Math.random() * NUM_POKEMON) + 1);
     }
     return Array.from(ids);
   };
@@ -39,7 +42,7 @@ const PokemonCard = () => {
   const loadNewCards = async () => {
     setIsLoading(true);
     try {
-      const pokemonIds = getRandomPokemonIds(8);
+      const pokemonIds = getRandomPokemonIds(NUM_CARDS_SHOWN);
       const pokemonData = await Promise.all(pokemonIds.map(fetchPokemon));
       setCards(pokemonData);
     } catch (error) {
