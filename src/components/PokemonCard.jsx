@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 const PokemonCard = () => {
   const [cards, setCards] = useState([]);
+  const [selectedCards, setSelectedCards] = useState(new Set());
   const [currentScore, setCurrentScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -40,6 +41,21 @@ const PokemonCard = () => {
     loadNewCards();
   }, []);
 
+  const handleCardClick = (id) => {
+    if (selectedCards.has(id)) {
+      if (currentScore > bestScore) setBestScore(currentScore);
+
+      setSelectedCards(new Set());
+      setCurrentScore(0);
+    } else {
+      setSelectedCards(new Set([...selectedCards, id]));
+      setCurrentScore(currentScore + 1);
+      console.log(currentScore);
+      console.log(bestScore);
+      loadNewCards();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       <div className="max-w-6xl mx-auto">
@@ -54,6 +70,7 @@ const PokemonCard = () => {
             cards.map((card) => (
               <div
                 key={card.id}
+                onClick={() => handleCardClick(card.id)}
                 className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center"
               >
                 <img
