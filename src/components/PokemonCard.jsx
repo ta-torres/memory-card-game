@@ -1,4 +1,14 @@
 import { useEffect, useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "./ui/button";
+import { Loader2 } from "lucide-react";
 
 const PokemonCard = () => {
   const [cards, setCards] = useState([]);
@@ -64,18 +74,24 @@ const PokemonCard = () => {
 
   if (isGameOver) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-4">
-        <div className="w-full max-w-md p-6">
-          <h2 className="text-2xl font-semibold text-center">Game Over!</h2>
-          <p className="text-xl">Final Score: {currentScore}</p>
-          <p className="text-lg">Best Score: {bestScore}</p>
-          <button
-            onClick={resetGame}
-            className="mt-4 w-full bg-blue-500 text-white p-2 rounded"
-          >
-            Play Again
-          </button>
-        </div>
+      <div className="flex flex-col items-center justify-center min-h-screen p-10 bg-gray-100">
+        <Card className="w-full max-w-md p-6">
+          <CardContent className="flex flex-col">
+            <CardHeader className="text-2xl font-bold text-center">
+              <CardTitle>Game Over</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xl">Final Score: {currentScore}</p>
+              <p className="text-sm">Best Score: {bestScore}</p>
+            </CardContent>
+            <Button
+              onClick={resetGame}
+              className="mt-4 w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+            >
+              Play Again
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -87,26 +103,31 @@ const PokemonCard = () => {
           <div className="text-lg">Score: {currentScore}</div>
           <div className="text-lg">Best Score: {bestScore}</div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {isLoading ? (
-            <div>Loading...</div>
-          ) : (
-            cards.map((card) => (
-              <div
+
+        {isLoading ? (
+          <div className="flex justify-center items-center h-64">
+            <Loader2 className="w-8 h-8 animate-spin" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {cards.map((card) => (
+              <Card
                 key={card.id}
                 onClick={() => handleCardClick(card.id)}
-                className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center"
+                className="bg-white rounded-lg shadow-md p-4 cursor-pointer transform transition-transform hover:scale-105"
               >
-                <img
-                  src={card.image}
-                  alt={card.name}
-                  className="w-32 h-32 object-contain"
-                />
-                <p className="mt-2 capitalize">{card.name}</p>
-              </div>
-            ))
-          )}
-        </div>
+                <CardContent className="p-4 flex flex-col items-center">
+                  <img
+                    src={card.image}
+                    alt={card.name}
+                    className="w-32 h-32 object-contain"
+                  />
+                  <p className="mt-2 capitalize">{card.name}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
