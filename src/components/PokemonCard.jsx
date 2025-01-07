@@ -77,19 +77,30 @@ const PokemonCard = () => {
 
   if (isGameOver) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-10 bg-gray-100">
-        <Card className="w-full max-w-md p-6">
-          <CardContent className="flex flex-col">
-            <CardHeader className="text-2xl font-bold text-center">
-              <CardTitle>Game Over</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xl">Final Score: {currentScore}</p>
-              <p className="text-sm">Best Score: {bestScore}</p>
-            </CardContent>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 p-10">
+        <Card className="w-full max-w-md">
+          <CardHeader className="space-y-1">
+            <CardTitle className="text-3xl font-bold text-center text-slate-800">
+              Game Over!
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <div className="flex justify-between items-center p-4 bg-slate-50 rounded-lg">
+              <span className="text-slate-600">Final Score</span>
+              <span className="text-2xl font-bold text-slate-800">
+                {currentScore}
+              </span>
+            </div>
+            <div className="flex justify-between items-center p-4 bg-slate-50 rounded-lg">
+              <span className="text-slate-600">Best Score</span>
+              <span className="text-2xl font-bold text-slate-800">
+                {bestScore}
+              </span>
+            </div>
+
             <Button
               onClick={resetGame}
-              className="mt-4 w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors"
             >
               Play Again
             </Button>
@@ -100,16 +111,24 @@ const PokemonCard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <div className="text-lg">Score: {currentScore}</div>
-          <div className="text-lg">Best Score: {bestScore}</div>
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-200">
+      <div className="max-w-6xl mx-auto p-6">
+        <div className="flex justify-between items-center mb-8 bg-white rounded-lg shadow-md p-4">
+          <div className="space-y-1">
+            <span className="text-md text-slate-500">Current Score</span>
+            <div className="text-2xl font-bold text-slate-800">
+              {currentScore}
+            </div>
+          </div>
+          <div className="space-y-1 text-right">
+            <span className="text-md text-slate-500">Best Score</span>
+            <div className="text-2xl font-bold text-slate-800">{bestScore}</div>
+          </div>
         </div>
 
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
-            <Loader2 className="w-8 h-8 animate-spin" />
+            <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -117,7 +136,7 @@ const PokemonCard = () => {
               <Card
                 key={card.id}
                 onClick={() => handleCardClick(card.id)}
-                className="bg-white rounded-lg shadow-md p-4 cursor-pointer transform transition-transform hover:scale-105"
+                className="bg-white rounded-lg shadow-md p-4 cursor-pointer transition-all duration-300 hover:scale-105"
               >
                 <CardContent className="p-4 flex flex-col items-center">
                   <img
